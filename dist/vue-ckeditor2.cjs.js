@@ -33,6 +33,9 @@ var VueCkeditor = function VueCkeditor() {
       config: {
         type: Object,
         default: function _default() {}
+      },
+      instanceReadyCallback: {
+        type: Function
       }
     },
     data: function data() {
@@ -100,9 +103,13 @@ var VueCkeditor = function VueCkeditor() {
           this.instance.on('focus', this.onFocus);
           this.instance.on('fileUploadResponse', function () {
             setTimeout(function () {
-              _this.onChange;
+              _this.onChange();
             }, 0);
           });
+
+          if (typeof this.instanceReadyCallback != 'undefined') {
+            this.instance.on('instanceReady', this.instanceReadyCallback);
+          }
         }
       },
       update: function update(val) {
